@@ -1,38 +1,38 @@
-import { HttpException, HttpStatus } from "@nestjs/common";
+import type { ErrorEnum } from '@/constants/error-code.constant'
 
-import { ErrorEnum } from '@/constants/error-code.constant'
-import { RESPONSE_SUCCESS_CODE } from "@/constants/response.constant";
+import { RESPONSE_SUCCESS_CODE } from '@/constants/response.constant'
+import { HttpException, HttpStatus } from '@nestjs/common'
 
 export class BusinessException extends HttpException {
-    private errorCode: number
+  private errorCode: number
 
-    constructor(error: ErrorEnum | string) {
-        // If not ErrorEnum
-        if (!error.includes(':')) {
-            super(
-                HttpException.createBody({
-                    code: RESPONSE_SUCCESS_CODE,
-                    message: error
-                }),
-                HttpStatus.OK
-            )
-            this.errorCode = RESPONSE_SUCCESS_CODE
-            return
-        }
-
-        const [code, message] = error.split(':')
-        super(
-            HttpException.createBody({
-                code,
-                message
-            }),
-            HttpStatus.OK
-        )
-
-        this.errorCode = Number(code)
+  constructor(error: ErrorEnum | string) {
+    // If not ErrorEnum
+    if (!error.includes(':')) {
+      super(
+        HttpException.createBody({
+          code: RESPONSE_SUCCESS_CODE,
+          message: error,
+        }),
+        HttpStatus.OK,
+      )
+      this.errorCode = RESPONSE_SUCCESS_CODE
+      return
     }
 
-    getErrorCode(): number {
-        return this.errorCode
-    }
+    const [code, message] = error.split(':')
+    super(
+      HttpException.createBody({
+        code,
+        message,
+      }),
+      HttpStatus.OK,
+    )
+
+    this.errorCode = Number(code)
+  }
+
+  getErrorCode(): number {
+    return this.errorCode
+  }
 }

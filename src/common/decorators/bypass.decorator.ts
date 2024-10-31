@@ -1,4 +1,4 @@
-import { SetMetadata } from "@nestjs/common";
+import { SetMetadata } from '@nestjs/common'
 
 export const BYPASS_KEY = Symbol('__BYPASS_KEY__')
 

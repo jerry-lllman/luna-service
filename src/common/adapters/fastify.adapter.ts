@@ -1,9 +1,9 @@
 // import FastifyMultipart from '@fastify/multipart'
-import { FastifyAdapter } from "@nestjs/platform-fastify";
+import { FastifyAdapter } from '@nestjs/platform-fastify'
 
 const app: FastifyAdapter = new FastifyAdapter({
-    trustProxy: true,
-    logger: false
+  trustProxy: true,
+  logger: false,
 })
 
 // app.register(FastifyMultipart, {
@@ -15,20 +15,20 @@ const app: FastifyAdapter = new FastifyAdapter({
 // })
 
 app.getInstance().addHook('onRequest', (request, reply, done) => {
-    // set undefined origin
-    const { origin } = request.headers
-    if (!origin) {
-        request.headers.origin = request.headers.host
-    }
+  // set undefined origin
+  const { origin } = request.headers
+  if (!origin) {
+    request.headers.origin = request.headers.host
+  }
 
-    const { url } = request
+  const { url } = request
 
-    // skip favicon request
-    if (url.match(/favicon.icon$/) || url.match(/manifest.json$/)) {
-        return reply.status(204).send()
-    }
+  // skip favicon request
+  if (url.match(/favicon.icon$/) || url.match(/manifest.json$/)) {
+    return reply.status(204).send()
+  }
 
-    done()
+  done()
 })
 
 export { app as fastifyApp }

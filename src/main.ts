@@ -1,12 +1,12 @@
-import { useContainer } from 'class-validator';
-
-import { NestFactory } from '@nestjs/core';
-
-import { NestFastifyApplication } from '@nestjs/platform-fastify'
+import type { NestFastifyApplication } from '@nestjs/platform-fastify'
 
 import { fastifyApp } from '@/common/adapters/fastify.adapter'
 
-import { AppModule } from './app.module';
+import { NestFactory } from '@nestjs/core'
+
+import { useContainer } from 'class-validator'
+
+import { AppModule } from './app.module'
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -14,12 +14,11 @@ async function bootstrap() {
     fastifyApp,
     {
       bufferLogs: true,
-      snapshot: true
-    }
-  );
+      snapshot: true,
+    },
+  )
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true })
-
 
   await app.listen({
     host: process.env.HOST ?? '0.0.0.0',
@@ -30,6 +29,6 @@ async function bootstrap() {
     }
 
     console.log(`🚀🚀🚀 Server is running on ${address}`)
-  });
+  })
 }
-bootstrap();
+bootstrap()

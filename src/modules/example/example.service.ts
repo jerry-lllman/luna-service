@@ -1,7 +1,5 @@
-
-
 export class ExampleService {
-    async test() {
-        return 'test'
-    }
+  async test() {
+    return 'test'
+  }
 }

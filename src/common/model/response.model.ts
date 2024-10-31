@@ -1,24 +1,23 @@
-import { RESPONSE_SUCCESS_CODE, RESPONSE_SUCCESS_MESSAGE } from "@/constants/response.constant"
+import { RESPONSE_SUCCESS_CODE, RESPONSE_SUCCESS_MESSAGE } from '@/constants/response.constant'
 
 export class ResOp<T = any> {
+  data?: T
 
-    data?: T
+  code: number
 
-    code: number
+  message: string
 
-    message: string
+  constructor(code: number, data: T, message = RESPONSE_SUCCESS_MESSAGE) {
+    this.code = code
+    this.message = message
+    this.data = data
+  }
 
-    constructor(code: number, data: T, message = RESPONSE_SUCCESS_MESSAGE) {
-        this.code = code
-        this.message = message
-        this.data = data
-    }
+  static success<T>(data?: T, message?: string) {
+    return new ResOp<T>(RESPONSE_SUCCESS_CODE, data, message)
+  }
 
-    static success<T>(data?: T, message?: string) {
-        return new ResOp<T>(RESPONSE_SUCCESS_CODE, data, message)
-    }
-
-    static error(code: number, message: any) {
-        return new ResOp(code, {}, message)
-    }
+  static error(code: number, message: any) {
+    return new ResOp(code, {}, message)
+  }
 }
