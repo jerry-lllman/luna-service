@@ -1,9 +1,12 @@
+import { useContainer } from 'class-validator';
+
 import { NestFactory } from '@nestjs/core';
 
 import { NestFastifyApplication } from '@nestjs/platform-fastify'
 
-import { AppModule } from './app.module';
 import { fastifyApp } from '@/common/adapters/fastify.adapter'
+
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -15,6 +18,7 @@ async function bootstrap() {
     }
   );
 
+  useContainer(app.select(AppModule), { fallbackOnErrors: true })
 
 
   await app.listen({
