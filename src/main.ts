@@ -1,12 +1,18 @@
-import type { NestFastifyApplication } from '@nestjs/platform-fastify'
-
 import { fastifyApp } from '@/common/adapters/fastify.adapter'
+
+import { Logger } from '@nestjs/common'
+
+import { ConfigService } from '@nestjs/config'
 
 import { NestFactory } from '@nestjs/core'
 
+import { NestFastifyApplication } from '@nestjs/platform-fastify'
 import { useContainer } from 'class-validator'
-
 import { AppModule } from './app.module'
+import { ConfigKeyPaths } from './config'
+import { LoggerService } from './shared/logger/logger.service'
+
+declare const module: any
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -18,17 +24,29 @@ async function bootstrap() {
     },
   )
 
+  const configService = app.get(ConfigService<ConfigKeyPaths>)
+
+  const { port, globalPrefix } = configService.get('app', { infer: true })
+  app.setGlobalPrefix(globalPrefix)
+
   useContainer(app.select(AppModule), { fallbackOnErrors: true })
 
   await app.listen({
     host: process.env.HOST ?? '0.0.0.0',
-    port: process.env.PORT ? Number(process.env.PORT) : 3000,
-  }, (err, address) => {
-    if (err) {
-      console.error(err)
-    }
+    port,
+  }, async () => {
+    app.useLogger(app.get(LoggerService))
 
-    console.log(`🚀🚀🚀 Server is running on ${address}`)
+    const url = await app.getUrl()
+
+    const logger = new Logger('NestApplication')
+
+    logger.log(`🚀🚀🚀 Server is running on ${url}`)
+
+    if (module.hot) {
+      module.hot.accept()
+      module.hot.dispose(() => app.close())
+    }
   })
 }
 bootstrap()

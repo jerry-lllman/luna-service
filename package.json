@@ -16,11 +16,15 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "docker:up": "docker compose --env-file .env --env-file .env.production up -d --no-build",
+    "docker:down": "docker compose --env-file .env --env-file .env.production down"
   },
   "dependencies": {
     "@fastify/static": "^8.0.2",
+    "@nestjs/axios": "^3.1.1",
     "@nestjs/common": "^10.0.0",
+    "@nestjs/config": "^3.3.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/platform-fastify": "^10.4.6",
@@ -29,7 +33,9 @@
     "fastify": "^5.0.0",
     "qs": "^6.13.0",
     "reflect-metadata": "^0.2.0",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "winston": "^3.15.0",
+    "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^3.8.0",
@@ -38,6 +44,7 @@
     "@nestjs/testing": "^10.0.0",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.2",
+    "@types/lodash": "^4.17.13",
     "@types/node": "^22.8.1",
     "@types/qs": "^6.9.16",
     "@types/supertest": "^6.0.0",

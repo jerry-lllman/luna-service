@@ -1,10 +1,13 @@
 import { AllExceptionFilter } from '@/common/filters/any-exception.filter'
+import { TimeoutInterceptor } from '@/common/interceptors/timeout.interceptor'
 import { TransformInterceptor } from '@/common/interceptors/transform.interceptor'
-import { ExampleModule } from '@/modules/example/example.module'
-import { ClassSerializerInterceptor, Module } from '@nestjs/common'
+import config from '@/config'
 
+import { ExampleModule } from '@/modules/example/example.module'
+import { SharedModule } from '@/shared/shared.module'
+import { ClassSerializerInterceptor, Module } from '@nestjs/common'
+import { ConfigModule } from '@nestjs/config'
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core'
-import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor'
 
 /**
  * module 组织应用程序结构的基本单元
@@ -14,7 +17,14 @@ import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor'
  */
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      expandVariables: true,
+      envFilePath: ['.env.local', `.env.${process.env.NODE_ENV}`, '.env'],
+      load: [...Object.values(config)],
+    }),
     ExampleModule,
+    SharedModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionFilter },

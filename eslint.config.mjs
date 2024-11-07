@@ -11,5 +11,6 @@ export default antfu({
     'no-console': 'off',
 
     'node/prefer-global/process': 'off',
+    'ts/consistent-type-imports': 'off',
   },
 })

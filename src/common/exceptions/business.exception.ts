@@ -1,4 +1,4 @@
-import type { ErrorEnum } from '@/constants/error-code.constant'
+import { ErrorEnum } from '@/constants/error-code.constant'
 
 import { RESPONSE_SUCCESS_CODE } from '@/constants/response.constant'
 import { HttpException, HttpStatus } from '@nestjs/common'

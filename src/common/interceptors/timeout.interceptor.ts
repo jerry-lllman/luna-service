@@ -1,7 +1,5 @@
-import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common'
-import type { Observable } from 'rxjs'
-import { RequestTimeoutException } from '@nestjs/common'
-import { catchError, throwError, timeout, TimeoutError } from 'rxjs'
+import { CallHandler, ExecutionContext, NestInterceptor, RequestTimeoutException } from '@nestjs/common'
+import { catchError, Observable, throwError, timeout, TimeoutError } from 'rxjs'
 
 export class TimeoutInterceptor implements NestInterceptor {
   constructor(private readonly time: number = 10000) { }
