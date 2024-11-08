@@ -23,8 +23,8 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core'
       envFilePath: ['.env.local', `.env.${process.env.NODE_ENV}`, '.env'],
       load: [...Object.values(config)],
     }),
-    ExampleModule,
     SharedModule,
+    ExampleModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionFilter },

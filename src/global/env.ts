@@ -1,5 +1,7 @@
 import { isUndefined } from 'lodash'
 
+export const isDev = process.env.NODE_ENV === 'development'
+
 export type BaseType = string | number | boolean | undefined | null
 
 function formatValue<T extends BaseType = string>(key: string, defaultValue: T, callback?: (value: string) => T): T {

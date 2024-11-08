@@ -1,4 +1,6 @@
 import { BusinessException } from '@/common/exceptions/business.exception'
+import { ErrorEnum } from '@/constants/error-code.constant'
+import { isDev } from '@/global/env'
 import { ArgumentsHost, ExceptionFilter, HttpException, HttpStatus, Logger } from '@nestjs/common'
 import { FastifyReply, FastifyRequest } from 'fastify'
 
@@ -9,33 +11,35 @@ interface myError {
 }
 
 export class AllExceptionFilter implements ExceptionFilter {
+  private readonly logger = new Logger(AllExceptionFilter.name)
+
   constructor() {
     this.registerCatchAllExceptionsHook()
   }
 
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp()
-    const _request = ctx.getRequest<FastifyRequest>()
+    const request = ctx.getRequest<FastifyRequest>()
     const response = ctx.getResponse<FastifyReply>()
 
-    // const url = request.raw.url!
+    const url = request.raw.url!
 
     const status = this.getStatus(exception)
-    const message = this.getErrorMessage(exception)
+    let message = this.getErrorMessage(exception)
 
     if (
       status === HttpStatus.INTERNAL_SERVER_ERROR
       && !(exception instanceof BusinessException)
     ) {
       Logger.error(exception, undefined, 'Catch')
-      // if (!isDev) {
-      //     message = ErrorEnum.SERVICE_ERROR?.split(':')[1]
-      // }
+      if (!isDev) {
+        message = ErrorEnum.SERVICE_ERROR?.split(':')[1]
+      }
     }
     else {
-      // this.logger.warn(
-      //     `Error Info: (${status}) ${message} Path: ${decodeURI(url)}`
-      // )
+      this.logger.warn(
+        `Error Info: (${status}) ${message} Path: ${decodeURI(url)}`,
+      )
     }
 
     const apiErrorCode = exception instanceof BusinessException ? exception.getErrorCode() : status

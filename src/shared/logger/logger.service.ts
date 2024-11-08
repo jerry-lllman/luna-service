@@ -46,7 +46,7 @@ export class LoggerService extends ConsoleLogger {
       transports: [
         new transports.DailyRotateFile({
           level: this.level,
-          filename: 'logs/%DATE%-%level%.log',
+          filename: 'logs/app.%DATE%.log',
           datePattern: 'YYYY-MM-DD',
           maxFiles: this.maxFiles,
           format: format.combine(format.timestamp(), format.json()),
