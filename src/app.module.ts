@@ -1,12 +1,15 @@
 import { AllExceptionFilter } from '@/common/filters/any-exception.filter'
 import { TimeoutInterceptor } from '@/common/interceptors/timeout.interceptor'
 import { TransformInterceptor } from '@/common/interceptors/transform.interceptor'
-import config from '@/config'
 
+import config from '@/config'
 import { ExampleModule } from '@/modules/example/example.module'
+import { PsdModule } from '@/modules/psd/psd.module'
 import { SharedModule } from '@/shared/shared.module'
+
 import { ClassSerializerInterceptor, Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
+
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core'
 
 /**
@@ -25,6 +28,7 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core'
     }),
     SharedModule,
     ExampleModule,
+    PsdModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionFilter },
