@@ -5,7 +5,7 @@ const cpuLen = cpus().length
 module.exports = {
   apps: [
     {
-      name: 'ps-service',
+      name: 'luna-service',
       script: './dist/main.js',
       autorestart: true,
       exec_mode: 'cluster',

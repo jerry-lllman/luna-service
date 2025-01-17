@@ -32,6 +32,8 @@ async function bootstrap() {
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true })
 
+  app.enableCors({ origin: '*', credentials: true })
+
   if (isDev) {
     app.useGlobalInterceptors(new LoggingInterceptor())
   }
@@ -42,8 +44,8 @@ async function bootstrap() {
       transform: true,
       // 去除掉那些没有使用任何验证装饰器的属性
       whitelist: true,
-      // 当传入的参数不在白名单中时，抛出错误
-      forbidNonWhitelisted: true,
+      // 当传入的参数不在装饰器中时，抛出错误
+      forbidNonWhitelisted: false,
       transformOptions: {
         // 启用隐式类型转换，比如将字符串 "1" 转换为数字 1
         enableImplicitConversion: true,

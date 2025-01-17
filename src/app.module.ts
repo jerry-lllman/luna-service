@@ -3,14 +3,15 @@ import { TimeoutInterceptor } from '@/common/interceptors/timeout.interceptor'
 import { TransformInterceptor } from '@/common/interceptors/transform.interceptor'
 
 import config from '@/config'
-import { ExampleModule } from '@/modules/example/example.module'
-import { PsdModule } from '@/modules/psd/psd.module'
 import { SharedModule } from '@/shared/shared.module'
+
+import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq'
 
 import { ClassSerializerInterceptor, Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
-
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core'
+import { DesignModule } from './modules/design/design.module'
+// import { RabbitMQConfigModule } from './modules/rabbit-mq/rabbit-mq.config.module'
 
 /**
  * module 组织应用程序结构的基本单元
@@ -27,8 +28,7 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core'
       load: [...Object.values(config)],
     }),
     SharedModule,
-    ExampleModule,
-    PsdModule,
+    DesignModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionFilter },
